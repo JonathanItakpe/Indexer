@@ -237,7 +237,7 @@ public class home extends javax.swing.JFrame {
         Integer limit = null;
         
         if ("".equals(txtFreq.getText())) {
-            limit = 4;
+            limit = 2;
         } else {
             try {
                 limit = Integer.parseInt(txtFreq.getText());
@@ -287,19 +287,18 @@ public class home extends javax.swing.JFrame {
             }      
         }
         updateBar(30);
-        Map<String, String> document_freq = null;
+        Map<String, Set> document_freq = null;
         try {
-            document_freq = Indexer.getFreq(document, limit, words_important_, words_ignore_);
+            document_freq = Indexer.getIndex(document, limit, words_important_, words_ignore_);
         } catch (IOException ex) {
             Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
         }
         updateBar(70);
         boxResult.setText("");
-        boxResult.append("Word     " + "\t" + " Frequency\n");
-        for (Map.Entry<String, String> entry : document_freq.entrySet()){
-            System.out.println(entry.getKey() + "/" + entry.getValue());
+        boxResult.append("Word     " + "\t" + " Page Number(s)\n");
+        for (Map.Entry<String, Set> entry : document_freq.entrySet()){
             if (Arrays.asList(words_ignore).contains(entry.getKey()) == false){
-                boxResult.append(entry.getKey() + "\t" + entry.getValue() + "\n");
+                boxResult.append(entry.getKey() + "\t" + entry.getValue().toString() + "\n");
             }           
         }
         document_freq.clear();
